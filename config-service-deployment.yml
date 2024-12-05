@@ -1,0 +1,41 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: config-service
+  labels:
+    app: config-service
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: config-service
+  template:
+    metadata:
+      labels:
+        app: config-service
+    spec:
+      containers:
+        - name: config-service
+          image: braulinho/config-service:latest  
+          ports:
+            - containerPort: 8081
+          env:
+            - name: SPRING_CLOUD_CONFIG_SERVER_GIT_URI
+              value: https://github.com/braulinho96/microserviciosProyecto  # URI del repo donde está la configuración
+            - name: SPRING_CLOUD_CONFIG_SERVER_GIT_SEARCH_PATHS
+              value: config-data  # Ruta dentro del repositorio Git donde buscar la configuración
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: config-service
+  labels:
+    app: config-service
+spec:
+  selector:
+    app: config-service
+  ports:
+    - port: 8081
+      targetPort: 8081
+  type: ClusterIP  # Usualmente, el Config Service se usa internamente, no es necesario exponerlo afuera
+

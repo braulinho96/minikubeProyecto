@@ -1,0 +1,38 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: simulate-service
+  labels:
+    app: simulate-service
+spec:
+  selector:
+    matchLabels:
+      app: simulate-service
+  replicas: 2
+  template:
+    metadata:
+      labels:
+        app: simulate-service
+    spec:
+      containers:
+      - name: simulate-service
+        image: braulinho/simulate-service:latest  # Nombre de la imagen del microservicio
+        ports:
+        - containerPort: 8002  # Puerto interno del contenedor
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: simulate-service
+  labels:
+    app: simulate-service
+spec:
+  selector:
+    app: simulate-service
+  ports:
+    - nodePort: 30501  # Puerto NodePort para acceso externo
+      protocol: TCP
+      port: 8010  # Puerto interno expuesto por el Service
+      targetPort: 8002  # Puerto del contenedor
+  type: NodePort
+

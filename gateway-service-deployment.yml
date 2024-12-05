@@ -1,0 +1,43 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: gateway-service
+  labels:
+    app: gateway-service
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: gateway-service
+  template:
+    metadata:
+      labels:
+        app: gateway-service
+    spec:
+      containers:
+        - name: gateway-service
+          image: braulinho/gateway-service:latest  # Cambia esta imagen si tienes una imagen personalizada
+          ports:
+            - containerPort: 8080  # Puerto donde el Gateway estará disponible
+          env:
+            - name: SPRING_CLOUD_CONFIG_URI
+              value: http://config-service.default.svc.cluster.local:8081  # Dirección del Config Service en el clúster
+            - name: EUREKA_CLIENT_SERVICE_URL
+              value: http://eureka-service.default.svc.cluster.local:8761/eureka  # Dirección de Eureka en el clúster
+            - name: SPRING_CLOUD_GATEWAY_DISCOVERY_ENABLED
+              value: "true"  # Habilitar el descubrimiento de servicios
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: gateway-service
+  labels:
+    app: gateway-service
+spec:
+  selector:
+    app: gateway-service
+  ports:
+    - port: 8080
+      targetPort: 8080  # Puerto que el servicio de Gateway estará exponiendo
+  type: NodePort  # Gateway solo necesita ser accesible internamente en el clúster
+

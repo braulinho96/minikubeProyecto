@@ -1,0 +1,94 @@
+docker build -t victorduartearce/backend:latest .
+docker run -d -p 8010:8002 victorduartearce/backend
+docker login
+docker push victorduartearce/backend:latest
+
+minikube ip
+
+minikube start --driver=hyperv
+minikube status
+
+kubectl get deployments
+kubectl get services
+kubectl get pods -o wide
+kubectl get nodes -o wide
+
+kubectl get secret
+kubectl get configmap
+kubectl get pvc
+
+kubectl apply -f postgresql-configmap.yml
+kubectl apply -f postgresql-user-secret.yml
+kubectl apply -f postgresql-root-secret.yml
+kubectl apply -f postgresql-deployment.yml
+kubectl apply -f backend-deployment.yml
+
+kubectl get configmap
+kubectl get secrets
+
+kubectl delete deployment backend
+kubectl delete service backend
+kubectl delete deployment postgresql
+kubectl delete service postgresql
+kubectl delete configmap postgresql-db
+kubectl delete secret postgresql-root-credentials
+kubectl delete secret postgresql-user-credentials
+kubectl delete pvc postgresql-pv-claim
+
++++++++++++++++++++++++++++++++++++++++
+http://172.20.192.74:30500/book
+
+172.20.192.74: es el IP donde esta minikube
+30500: es el puerto Nodeport
+
+----------------------------------
+https://www.base64decode.org/
+----------------------------------
+
+
+########### Comandos Docker para Microservicios ###########
+
+docker build -t braulinho/config-service:latest .
+docker push braulinho/config-service:latest
+
+docker build -t braulinho/eureka-service:latest .
+docker push braulinho/eureka-service:latest
+
+docker build -t braulinho/gateway-service:latest .
+docker push braulinho/gateway-service:latest
+
+docker build -t braulinho/simulate-service:latest .
+docker push braulinho/simulate-service:latest
+
+
+########### Comandos para levantar pods en minikube ###########
+
+kubectl apply -f postgres-configmap.yml
+kubectl apply -f postgres-secret.yml
+kubectl apply -f postgres-simulate-deployment.yml
+
+kubectl apply -f config-service-deployment.yml
+kubectl apply -f eureka-service-deployment.yml
+kubectl apply -f gateway-service-deployment.yml
+kubectl apply -f simulate-service-deployment.yml
+
+
+kubectl get configmap
+
+########### DELETES ###########
+kubectl delete deployment config-service
+kubectl delete service config-service
+
+kubectl delete deployment eureka-service
+kubectl delete service eureka-service
+
+kubectl delete deployment gateway-service
+kubectl delete service gateway-service
+
+kubectl delete deployment simulate-service
+kubectl delete service simulate-service
+
+
+kubectl delete pvc postgres-simulate-pv-claim
+
+

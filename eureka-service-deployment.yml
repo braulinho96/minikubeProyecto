@@ -1,0 +1,41 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: eureka-service
+  labels:
+    app: eureka-service
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: eureka-service
+  template:
+    metadata:
+      labels:
+        app: eureka-service
+    spec:
+      containers:
+        - name: eureka-service
+          image: braulinho/eureka-service:latest
+          ports:
+            - containerPort: 8761  # Puerto donde Eureka estará disponible
+          env:
+            - name: EUREKA_CLIENT_FETCH_REGISTRY
+              value: "false"  # Eureka como servidor no necesita registrar un cliente
+            - name: EUREKA_SERVER_WAIT_TIME_IN_MS_WHILE_RECONNECT_ATTEMPT
+              value: "5000"  # Tiempo de espera entre intentos de reconexión del servidor Eureka
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: eureka-service
+  labels:
+    app: eureka-service
+spec:
+  selector:
+    app: eureka-service
+  ports:
+    - port: 8761
+      targetPort: 8761  # Puerto que el servicio de Eureka estará exponiendo
+  type: ClusterIP  # Eureka solo necesita ser accesible internamente en el clúster
+
