@@ -21,9 +21,9 @@ spec:
             - containerPort: 8080  # Puerto donde el Gateway estará disponible
           env:
             - name: SPRING_CLOUD_CONFIG_URI
-              value: http://config-service.default.svc.cluster.local:8081  # Dirección del Config Service en el clúster
+              value: http://config-service.default.svc.cluster.local:8081  
             - name: EUREKA_CLIENT_SERVICE_URL
-              value: http://eureka-service.default.svc.cluster.local:8761/eureka  # Dirección de Eureka en el clúster
+              value: http://eureka-service.default.svc.cluster.local:8761/eureka/
             - name: SPRING_CLOUD_GATEWAY_DISCOVERY_ENABLED
               value: "true"  # Habilitar el descubrimiento de servicios
 ---
@@ -39,5 +39,5 @@ spec:
   ports:
     - port: 8080
       targetPort: 8080  # Puerto que el servicio de Gateway estará exponiendo
-  type: NodePort  # Gateway solo necesita ser accesible internamente en el clúster
+  type: ClusterIP  
 
