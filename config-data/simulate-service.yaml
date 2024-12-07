@@ -5,7 +5,7 @@ eureka:
     fetch-registry: true
     register-with-eureka: true
     service-url:
-      default-zone: http://eureka-service.default.svc.cluster.local:8761/eureka/  # Dirección de Eureka en el clúster
+      defaultZone: http://eureka-service:8761/eureka/  # Dirección de Eureka en el clúster
   instance:
     hostname: simulate-service
 

@@ -6,10 +6,9 @@ eureka:
     fetch-registry: true
     register-with-eureka: true
     service-url:
-      default-zone: http://eureka-service.default.svc.cluster.local:8761/eureka/
-
+      defaultZone: http://eureka-service:8761/eureka/
   instance:
-    hostname: gateway-service
+    hostname: localhost
 
 spring:
   cloud:
@@ -19,32 +18,32 @@ spring:
           enabled: true
       routes:
         - id: register-service
-          uri: http://register-service.default.svc.cluster.local
+          uri: http://register-service
           predicates:
             - Path=/register/**
             
         - id: loan-service
-          uri: http://loan-service.default.svc.cluster.local
+          uri: http://loan-service
           predicates:
             - Path=/loans/**
 
         - id: document-service
-          uri: http://document-service.default.svc.cluster.local
+          uri: http://document-service
           predicates:
             - Path=/documents/**
             
         - id: simulate-service
-          uri: http://simulate-service.default.svc.cluster.local
+          uri: http://simulate-service
           predicates:
             - Path=/simulate/**
             
         - id: evaluation-service
-          uri: http://evaluation-service.default.svc.cluster.local
+          uri: http://evaluation-service
           predicates:
             - Path=/evaluate/**
             
         - id: followup-service
-          uri: http://followup-service.default.svc.cluster.local
+          uri: http://followup-service
           predicates:
             - Path=/followup/**
 
