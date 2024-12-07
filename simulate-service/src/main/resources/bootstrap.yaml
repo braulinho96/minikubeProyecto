@@ -5,11 +5,11 @@ spring:
     config:
       enabled: true
       uri: http://config-service.default.svc.cluster.local:8081  # Dirección del Config Service en el clúster
-  eureka:
-    client:
-      fetch-registry: true
-      register-with-eureka: true
-      service-url:
-        default-zone: http://eureka-service.default.svc.cluster.local:8761/eureka  # Dirección de Eureka en el clúster
-  instance:
-    instance-id: ${spring.application.name}:${spring.application.instance_id:${random.value}}  # ID único para cada instancia
+
+eureka:
+  client:
+    fetch-registry: true
+    register-with-eureka: true
+    service-url:
+      defaultZone: http://eureka-service:8761/eureka/
+

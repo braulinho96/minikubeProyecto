@@ -8,7 +8,7 @@ spec:
   selector:
     matchLabels:
       app: simulate-service
-  replicas: 2
+  replicas: 1
   template:
     metadata:
       labels:
@@ -30,9 +30,7 @@ spec:
   selector:
     app: simulate-service
   ports:
-    - nodePort: 30501  # Puerto NodePort para acceso externo
-      protocol: TCP
-      port: 8010  # Puerto interno expuesto por el Service
+    - port: 8010  # Puerto expuesto dentro del servicio
       targetPort: 8002  # Puerto del contenedor
-  type: NodePort
+  type: ClusterIP  # Tipo ClusterIP para acceso interno
 
