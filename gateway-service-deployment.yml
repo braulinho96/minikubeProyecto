@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
         - name: gateway-service
-          image: braulinho/gateway-service:latest  # Cambia esta imagen si tienes una imagen personalizada
+          image: braulinho/gateway-service:latest  
           ports:
             - containerPort: 8080  # Puerto donde el Gateway estará disponible
           env:
@@ -38,6 +38,7 @@ spec:
     app: gateway-service
   ports:
     - port: 8080
-      targetPort: 8080  # Puerto que el servicio de Gateway estará exponiendo
-  type: ClusterIP  
+      targetPort: 8080  
+      nodePort: 30001
+  type: NodePort  
 
