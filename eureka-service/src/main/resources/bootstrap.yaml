@@ -3,4 +3,4 @@ spring:
     name: eureka-service
   cloud:
     config:
-      uri: http://config-service.default.svc.cluster.local:8081
+      uri: http://localhost:8081

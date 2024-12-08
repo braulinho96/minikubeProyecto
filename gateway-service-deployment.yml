@@ -1,31 +1,31 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: gateway-service
+  name: gateway-deployment
   labels:
-    app: gateway-service
+    app: gateway-deployment
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: gateway-service
+      app: gateway-deployment
   template:
     metadata:
       labels:
-        app: gateway-service
+        app: gateway-deployment
     spec:
       containers:
         - name: gateway-service
           image: braulinho/gateway-service:latest  
           ports:
-            - containerPort: 8080  # Puerto donde el Gateway estará disponible
+            - containerPort: 8081
           env:
             - name: SPRING_CLOUD_CONFIG_URI
-              value: http://config-service.default.svc.cluster.local:8081  
-            - name: EUREKA_CLIENT_SERVICE_URL
-              value: http://eureka-service.default.svc.cluster.local:8761/eureka/
-            - name: SPRING_CLOUD_GATEWAY_DISCOVERY_ENABLED
-              value: "true"  # Habilitar el descubrimiento de servicios
+              value: http://config-service:8081
+            - name: EUREKA_CLIENT_SERVICEURL_DEFAULTZONE
+              value: http://eureka-service:8761
+            - name: eureka.instance.preferIpAddress
+              value: "true"
 ---
 apiVersion: v1
 kind: Service
@@ -35,10 +35,10 @@ metadata:
     app: gateway-service
 spec:
   selector:
-    app: gateway-service
+    app: gateway-deployments
   ports:
-    - port: 8080
+    - protocol: TCP
+      port: 8080
       targetPort: 8080  
-      nodePort: 30001
-  type: NodePort  
+  type: LoadBalancer  
 

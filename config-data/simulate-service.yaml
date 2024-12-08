@@ -1,5 +1,6 @@
 server:
-  port: ${PORT:${SERVER_PORT:0}}
+  port: 8085
+  
 eureka:
   client:
     fetch-registry: true
@@ -7,5 +8,11 @@ eureka:
     service-url:
       defaultZone: http://eureka-service:8761/eureka/  # Dirección de Eureka en el clúster
   instance:
-    hostname: simulate-service
+    instance-id: ${spring.application.name}:${spring.application.instance_id:${random.value}}
+    
+management:
+  endpoints:
+    web:
+      explosure:
+        include: "*"
 
