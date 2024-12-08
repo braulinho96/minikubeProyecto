@@ -39,17 +39,14 @@ spec:
               name: postgres-credentials
               key: password
               
-        - name: POSTGRES_DATABASE_REGISTER
+        - name: POSTGRES_DB
+          value: "postgres"
+          
+        - name: POSTGRES_USER
           valueFrom:
-            configMapKeyRef:
-              name: register
-              key: name      
-  
-        - name: POSTGRES_DATABASE_LOAN
-          valueFrom:
-            configMapKeyRef:
-              name: loan
-              key: name 
+            secretKeyRef:
+              name: postgres-credentials
+              key: username
 
         ports:
         - containerPort: 5432
@@ -57,10 +54,19 @@ spec:
         volumeMounts:
         - name: postgres-persistent-storage
           mountPath: /var/lib/postgresql/data
+          
+        - name: init-scripts
+          mountPath: /docker-entrypoint-initdb.d
+          
+          
       volumes:
       - name: postgres-persistent-storage
         persistentVolumeClaim:
-          claimName: postgres-simulate-pv-claim
+          claimName: postgres-pv-claim
+          
+      - name: init-scripts
+        configMap:
+          name: postgres-init-scripts
 ---
 apiVersion: v1
 kind: PersistentVolumeClaim
@@ -75,4 +81,32 @@ spec:
   resources:
     requests:
       storage: 100Mi
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: postgres-init-scripts
+data:
+  init-db.sh: |
+    #!/bin/bash
+    set -e
+
+    # Crear las bases de datos si no existen
+    psql -U "$POSTGRES_USER" <<-EOSQL
+      DO \$\$ 
+      BEGIN
+        IF NOT EXISTS (SELECT FROM pg_database WHERE datname = 'register') THEN
+          CREATE DATABASE register;
+        END IF;
+      END
+      \$\$;
+
+      DO \$\$ 
+      BEGIN
+        IF NOT EXISTS (SELECT FROM pg_database WHERE datname = 'loan') THEN
+          CREATE DATABASE loan;
+        END IF;
+      END
+      \$\$;
+    EOSQL
 

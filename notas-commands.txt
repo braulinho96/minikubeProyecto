@@ -67,10 +67,19 @@ docker push braulinho/register-service:latest
 
 minikube start --driver=virtualbox
 
+
+
+
 kubectl apply -f postgres-configmap-loan.yml
 kubectl apply -f postgres-configmap-register.yml
 kubectl apply -f postgres-secret.yml
 kubectl apply -f postgres-deployment.yml
+
+
+kubectl apply -f postgres-register-deployment.yml
+kubectl apply -f postgres-loan-deployment.yml
+
+kubectl exec -it A -- psql -U postgres
 
 kubectl apply -f config-deployment.yml
 kubectl apply -f eureka-deployment.yml
@@ -82,6 +91,15 @@ kubectl apply -f register-deployment.yml
 kubectl get configmap
 
 ########### DELETES ###########
+
+kubectl delete service postgres-register
+kubectl delete deployment postgres-register
+
+
+
+kubectl delete configmap postgres-init-scripts
+
+
 kubectl delete deployment config-deployment
 kubectl delete service config-service
 
