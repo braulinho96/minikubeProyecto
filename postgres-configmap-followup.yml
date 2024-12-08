@@ -1,0 +1,7 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: followup
+data:
+  host: postgres
+  name: followup

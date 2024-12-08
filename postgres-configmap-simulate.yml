@@ -1,0 +1,7 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: simulate
+data:
+  host: postgres
+  name: simulate

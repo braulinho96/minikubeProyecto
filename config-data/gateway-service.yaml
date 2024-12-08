@@ -37,7 +37,7 @@ spring:
             - Path=/loans/**
 
         - id: document-service
-          uri: lb://document-service
+          uri: lb://loan-service
           predicates:
             - Path=/documents/**
             

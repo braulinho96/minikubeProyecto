@@ -85,6 +85,7 @@
 				</configuration>
 			</plugin>
 		</plugins>
+		<finalName>evaluation-service</finalName>
 	</build>
 
 </project>

@@ -63,42 +63,49 @@ docker push braulinho/simulate-service:latest
 docker build -t braulinho/register-service:latest .
 docker push braulinho/register-service:latest
 
+docker build -t braulinho/loan-service:latest .
+docker push braulinho/loan-service:latest
+
+docker build -t braulinho/evaluation-service:latest .
+docker push braulinho/evaluation-service:latest
+
+docker build -t braulinho/followup-service:latest .
+docker push braulinho/followup-service:latest
+
 ########### Comandos para levantar pods en minikube ###########
 
 minikube start --driver=virtualbox
 
-
-
-
 kubectl apply -f postgres-configmap-loan.yml
 kubectl apply -f postgres-configmap-register.yml
+kubectl apply -f postgres-configmap-evaluation.yml
+kubectl apply -f postgres-configmap-simulate.yml
+kubectl apply -f postgres-configmap-followup.yml
+
 kubectl apply -f postgres-secret.yml
 kubectl apply -f postgres-deployment.yml
 
+kubectl exec -it namepod -- psql -U postgres
+\c register
+\d users
 
-kubectl apply -f postgres-register-deployment.yml
-kubectl apply -f postgres-loan-deployment.yml
-
-kubectl exec -it A -- psql -U postgres
 
 kubectl apply -f config-deployment.yml
 kubectl apply -f eureka-deployment.yml
 kubectl apply -f gateway-deployment.yml
 kubectl apply -f simulate-deployment.yml
 kubectl apply -f register-deployment.yml
+kubectl apply -f loan-deployment.yml
+kubectl apply -f evaluation-deployment.yml
+kubectl apply -f followup-deployment.yml
 
 
 kubectl get configmap
 
 ########### DELETES ###########
 
-kubectl delete service postgres-register
-kubectl delete deployment postgres-register
-
-
-
-kubectl delete configmap postgres-init-scripts
-
+kubectl delete service postgres
+kubectl delete deployment postgres
 
 kubectl delete deployment config-deployment
 kubectl delete service config-service
@@ -114,4 +121,14 @@ kubectl delete service simulate-service
 
 kubectl delete deployment register-deployment
 kubectl delete service register-service
+
+kubectl delete deployment loan-deployment
+kubectl delete service loan-service
+
+kubectl delete deployment evaluation-deployment
+kubectl delete service evaluation-service
+
+kubectl delete deployment followup-deployment
+kubectl delete service followup-service
+
 
