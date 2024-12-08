@@ -85,6 +85,7 @@
 				</configuration>
 			</plugin>
 		</plugins>
+		<finalName>register-service</finalName>
 	</build>
 
 </project>

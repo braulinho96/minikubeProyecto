@@ -5,7 +5,7 @@ docker push victorduartearce/backend:latest
 
 minikube ip
 
-minikube start --driver=hyperv
+minikube start --driver=virtualbox
 minikube status
 
 kubectl get deployments
@@ -60,35 +60,40 @@ docker push braulinho/gateway-service:latest
 docker build -t braulinho/simulate-service:latest .
 docker push braulinho/simulate-service:latest
 
+docker build -t braulinho/register-service:latest .
+docker push braulinho/register-service:latest
 
 ########### Comandos para levantar pods en minikube ###########
 
-kubectl apply -f postgres-configmap.yml
-kubectl apply -f postgres-secret.yml
-kubectl apply -f postgres-simulate-deployment.yml
+minikube start --driver=virtualbox
 
-kubectl apply -f config-service-deployment.yml
-kubectl apply -f eureka-service-deployment.yml
-kubectl apply -f gateway-service-deployment.yml
-kubectl apply -f simulate-service-deployment.yml
+kubectl apply -f postgres-configmap-loan.yml
+kubectl apply -f postgres-configmap-register.yml
+kubectl apply -f postgres-secret.yml
+kubectl apply -f postgres-deployment.yml
+
+kubectl apply -f config-deployment.yml
+kubectl apply -f eureka-deployment.yml
+kubectl apply -f gateway-deployment.yml
+kubectl apply -f simulate-deployment.yml
+kubectl apply -f register-deployment.yml
 
 
 kubectl get configmap
 
 ########### DELETES ###########
-kubectl delete deployment config-service
+kubectl delete deployment config-deployment
 kubectl delete service config-service
 
-kubectl delete deployment eureka-service
+kubectl delete deployment eureka-deployment
 kubectl delete service eureka-service
 
-kubectl delete deployment gateway-service
+kubectl delete deployment gateway-deployment
 kubectl delete service gateway-service
 
-kubectl delete deployment simulate-service
+kubectl delete deployment simulate-deployment
 kubectl delete service simulate-service
 
-
-kubectl delete pvc postgres-simulate-pv-claim
-
+kubectl delete deployment register-deployment
+kubectl delete service register-service
 

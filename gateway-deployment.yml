@@ -35,7 +35,7 @@ metadata:
     app: gateway-service
 spec:
   selector:
-    app: gateway-deployments
+    app: gateway-deployment
   ports:
     - protocol: TCP
       port: 8080

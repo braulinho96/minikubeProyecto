@@ -35,7 +35,7 @@ spec:
     app: eureka-deployment
   ports:
     - port: 8761
-      targetPort: 8761  # Puerto que el servicio de Eureka estará exponiendo
+      targetPort: 8761
       protocol: TCP
   type: LoadBalancer  
 

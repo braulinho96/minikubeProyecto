@@ -33,21 +33,24 @@ spec:
       - image: postgres:latest
         name: postgres
         env:
-        - name: POSTGRES_USER
-          valueFrom:
-            secretKeyRef:
-              name: postgres-user-credentials
-              key: username
         - name: POSTGRES_PASSWORD
           valueFrom:
             secretKeyRef:
-              name: postgres-user-credentials
+              name: postgres-credentials
               key: password
-        - name: POSTGRES_DB
+              
+        - name: POSTGRES_DATABASE_REGISTER
           valueFrom:
             configMapKeyRef:
-              name: postgres-db
-              key: name
+              name: register
+              key: name      
+  
+        - name: POSTGRES_DATABASE_LOAN
+          valueFrom:
+            configMapKeyRef:
+              name: loan
+              key: name 
+
         ports:
         - containerPort: 5432
           name: postgres
@@ -57,7 +60,7 @@ spec:
       volumes:
       - name: postgres-persistent-storage
         persistentVolumeClaim:
-          claimName: postgres-pv-claim
+          claimName: postgres-simulate-pv-claim
 ---
 apiVersion: v1
 kind: PersistentVolumeClaim
@@ -71,17 +74,5 @@ spec:
     - ReadWriteOnce
   resources:
     requests:
-      storage: 2Gi
----
-apiVersion: v1
-kind: PersistentVolume
-metadata:
-  name: postgres
-spec:
-  accessModes:
-    - ReadWriteOnce
-  capacity:
-    storage: 2Gi
-  hostPath:
-    path: /data/postgres
-  storageClassName: standard
+      storage: 100Mi
+

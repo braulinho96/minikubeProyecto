@@ -1,0 +1,67 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: register-deployment
+  labels:
+    app: register-deployment
+spec:
+  selector:
+    matchLabels:
+      app: register-deployment
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: register-deployment
+    spec:
+      containers:
+      - name: register-service
+        image: braulinho/register-service:latest 
+        ports:
+        - containerPort: 8081
+        env:
+        - name: SPRING_CLOUD_CONFIG_URI
+	  value: http://config-service:8081
+	- name: EUREKA_CLIENT_SERVICEURL_DEFAULTZONE
+	  value: http://eureka-service:8761
+	- name: eureka.instance.preferIpAddress
+	  value: "true"
+
+        - name: DB_HOST
+          valueFrom:
+            configMapKeyRef:
+              name: register
+              key: host
+              
+        - name: DB_NAME
+          valueFrom:
+            configMapKeyRef:
+              name: register
+              key: name
+              
+        - name: DB_USERNAME
+          valueFrom:
+            secretKeyRef:
+              name: postgres-credentials
+              key: username
+              
+        - name: DB_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: postgres-credentials
+              key: password
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: register-service
+  labels:
+    app: register-service
+spec:
+  selector:
+    app: register-deployment
+  ports:
+    - protocol: TCP
+      port: 8085
+      targetPort: 8085
+  type: LoadBalancer
