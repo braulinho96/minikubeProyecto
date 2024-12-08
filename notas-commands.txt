@@ -106,6 +106,10 @@ kubectl get configmap
 
 kubectl delete service postgres
 kubectl delete deployment postgres
+kubectl delete configmap postgres-init-scripts
+
+* DATOS * kubectl delete pvc postgres-pv-claim
+
 
 kubectl delete deployment config-deployment
 kubectl delete service config-service

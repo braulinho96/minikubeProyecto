@@ -88,47 +88,13 @@ data:
   init-db.sh: |
     #!/bin/bash
     set -e
-
+    
     # Crear las bases de datos si no existen
-    psql -U "$POSTGRES_USER" <<-EOSQL
-      DO \$\$ 
-      BEGIN
-        IF NOT EXISTS (SELECT FROM pg_database WHERE datname = 'register') THEN
-          CREATE DATABASE register;
-        END IF;
-      END
-      \$\$;
-
-      DO \$\$ 
-      BEGIN
-        IF NOT EXISTS (SELECT FROM pg_database WHERE datname = 'loan') THEN
-          CREATE DATABASE loan;
-        END IF;
-      END
-      \$\$;
-
-      DO \$\$ 
-      BEGIN
-        IF NOT EXISTS (SELECT FROM pg_database WHERE datname = 'evaluation') THEN
-          CREATE DATABASE evaluation;
-        END IF;
-      END
-      \$\$;
-
-      DO \$\$ 
-      BEGIN
-        IF NOT EXISTS (SELECT FROM pg_database WHERE datname = 'simulate') THEN
-          CREATE DATABASE simulate;
-        END IF;
-      END
-      \$\$;
-
-      DO \$\$ 
-      BEGIN
-        IF NOT EXISTS (SELECT FROM pg_database WHERE datname = 'followup') THEN
-          CREATE DATABASE followup;
-        END IF;
-      END
-      \$\$;
+    psql -U "$POSTGRES_USER" -d postgres <<-EOSQL
+      CREATE DATABASE register;
+      CREATE DATABASE loan;
+      CREATE DATABASE evaluation;
+      CREATE DATABASE simulate;
+      CREATE DATABASE followup;
     EOSQL
 
