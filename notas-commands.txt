@@ -1,39 +1,3 @@
-docker build -t victorduartearce/backend:latest .
-docker run -d -p 8010:8002 victorduartearce/backend
-docker login
-docker push victorduartearce/backend:latest
-
-minikube ip
-
-minikube start --driver=virtualbox
-minikube status
-
-kubectl get deployments
-kubectl get services
-kubectl get pods -o wide
-kubectl get nodes -o wide
-
-kubectl get secret
-kubectl get configmap
-kubectl get pvc
-
-kubectl apply -f postgresql-configmap.yml
-kubectl apply -f postgresql-user-secret.yml
-kubectl apply -f postgresql-root-secret.yml
-kubectl apply -f postgresql-deployment.yml
-kubectl apply -f backend-deployment.yml
-
-kubectl get configmap
-kubectl get secrets
-
-kubectl delete deployment backend
-kubectl delete service backend
-kubectl delete deployment postgresql
-kubectl delete service postgresql
-kubectl delete configmap postgresql-db
-kubectl delete secret postgresql-root-credentials
-kubectl delete secret postgresql-user-credentials
-kubectl delete pvc postgresql-pv-claim
 
 +++++++++++++++++++++++++++++++++++++++
 http://172.20.192.74:30500/book
@@ -72,6 +36,9 @@ docker push braulinho/evaluation-service:latest
 docker build -t braulinho/followup-service:latest .
 docker push braulinho/followup-service:latest
 
+docker build -t braulinho/frontend-service:latest .
+docker push braulinho/frontend-service:latest
+
 ########### Comandos para levantar pods en minikube ###########
 
 minikube start --driver=virtualbox
@@ -89,6 +56,9 @@ kubectl exec -it namepod -- psql -U postgres
 \c register
 \d users
 
+minikube service frontend-service --url
+kubectl port-forward service/gateway-service 8080:8080
+
 
 kubectl apply -f config-deployment.yml
 kubectl apply -f eureka-deployment.yml
@@ -98,7 +68,7 @@ kubectl apply -f register-deployment.yml
 kubectl apply -f loan-deployment.yml
 kubectl apply -f evaluation-deployment.yml
 kubectl apply -f followup-deployment.yml
-
+kubectl apply -f frontend-deployment.yml
 
 kubectl get configmap
 
@@ -107,7 +77,6 @@ kubectl get configmap
 kubectl delete service postgres
 kubectl delete deployment postgres
 kubectl delete configmap postgres-init-scripts
-
 * DATOS * kubectl delete pvc postgres-pv-claim
 
 
@@ -135,4 +104,6 @@ kubectl delete service evaluation-service
 kubectl delete deployment followup-deployment
 kubectl delete service followup-service
 
+kubectl delete deployment frontend-deployment
+kubectl delete service frontend-service
 
