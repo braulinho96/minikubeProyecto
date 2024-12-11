@@ -56,6 +56,7 @@ kubectl exec -it namepod -- psql -U postgres
 \c register
 \d users
 
+sudo systemctl stop jenkins.service
 minikube service frontend-service --url
 kubectl port-forward service/gateway-service 8080:8080
 

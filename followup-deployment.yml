@@ -68,4 +68,4 @@ spec:
     - protocol: TCP
       port: 8086
       targetPort: 8086
-  type: LoadBalancer
+  type: ClusterIP

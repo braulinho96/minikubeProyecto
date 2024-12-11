@@ -1,5 +1,5 @@
 server:
-  port: 8086
+  port: 0
 eureka:
   client:
     fetch-registry: true
@@ -8,8 +8,4 @@ eureka:
       default-zone: http://eureka-service:8761/eureka
   instance:
     instance-id: ${spring.application.name}:${spring.application.instance_id:${random.value}}
-management:
-  endpoints:
-    web:
-      explosure:
-        include: "*"
+

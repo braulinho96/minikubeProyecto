@@ -1,5 +1,5 @@
 server:
-  port: 8084
+  port: 0
 eureka:
   client:
     fetch-registry: true
@@ -9,9 +9,4 @@ eureka:
   instance:
     instance-id: ${spring.application.name}:${spring.application.instance_id:${random.value}}
 
-management:
-  endpoints:
-    web:
-      explosure:
-        include: "*"
 
